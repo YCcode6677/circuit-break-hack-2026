@@ -1,20 +1,1668 @@
-.app {
-  width: min(1200px, 90%);
+/*
+   COLOR SYSTEM
+*/
+
+:root {
+  --black: #07060a;
+  --black-2: #0d0912;
+  --black-3: #15101d;
+
+  --purple: #8b5cf6;
+  --purple-bright: #b794ff;
+  --purple-dark: #4d277a;
+
+  --white: #f8f7ff;
+  --gray: #aaa5b5;
+
+  --pixel-border: 4px;
+}
+
+
+/*
+   GLOBAL
+*/
+
+body {
+  background: var(--black);
+}
+
+section {
+  scroll-margin-top: 82px;
+}
+
+.home-section {
+  padding: 0;
+}
+
+.game-section {
+  position: relative;
+
   min-height: 100vh;
-  margin: 0 auto;
+
+  padding: 120px 8%;
+
+  background:
+    linear-gradient(rgba(139, 92, 246, 0.025) 1px,
+      transparent 1px),
+    linear-gradient(90deg,
+      rgba(139, 92, 246, 0.025) 1px,
+      transparent 1px),
+    var(--black);
+
+  background-size: 32px 32px;
+}
+
+.alt-section {
+  background-color: var(--black-2);
+}
+
+
+/*
+   NAVBAR
+*/
+
+.pixel-navbar {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  z-index: 1000;
+
+  width: 100%;
+  height: 82px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 5%;
+
+  background: rgba(7, 6, 10, 0.94);
+
+  border-bottom: 4px solid var(--purple);
+
+  box-shadow:
+    0 4px 0 #251531,
+    0 8px 0 rgba(0, 0, 0, 0.5);
+}
+
+
+.pixel-brand {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+.navbar-logo {
+  width: 48px;
+  height: 48px;
+
+  object-fit: contain;
+
+  image-rendering: pixelated;
+}
+
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+
+  font-family: "Press Start 2P", monospace;
+
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+
+.purple-text {
+  color: var(--purple-bright);
+}
+
+
+.pixel-nav-links {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+
+.pixel-nav-links a {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 12px 14px;
+
+  border: 2px solid transparent;
+
+  font-family: "Press Start 2P", monospace;
+  font-size: 8px;
+
+  color: #bcb8c5;
+
+  transition:
+    color 0.1s,
+    background 0.1s,
+    transform 0.1s;
+}
+
+
+.pixel-nav-links a span {
+  color: var(--purple);
+
+  font-family: "VT323", monospace;
+  font-size: 15px;
+}
+
+
+.pixel-nav-links a:hover {
+  color: white;
+
+  background: var(--black-3);
+
+  border-color: var(--purple);
+
+  transform: translateY(-2px);
+}
+
+
+.live-nav {
+  border: 2px solid var(--purple) !important;
+
+  color: white !important;
+}
+
+
+.live-nav:hover {
+  background: var(--purple) !important;
+}
+
+
+.navbar-status {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  font-family: "Press Start 2P", monospace;
+  font-size: 7px;
+
+  color: var(--gray);
+}
+
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+
+  background: var(--purple-bright);
+
+  box-shadow:
+    0 0 8px var(--purple),
+    0 0 16px var(--purple);
+}
+
+
+/*
+   HERO
+*/
+
+.pixel-hero {
+  position: relative;
+
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  padding:
+    130px 7% 100px;
+
+  background:
+    radial-gradient(circle at 50% 40%,
+      rgba(139, 92, 246, 0.20),
+      transparent 38%),
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px),
+    linear-gradient(90deg,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px),
+    #07060a;
+
+  background-size:
+    auto,
+    32px 32px,
+    32px 32px,
+    auto;
+}
+
+
+*scanline */ .scanlines {
+  position: absolute;
+  inset: 0;
+
+  z-index: 20;
+
+  pointer-events: none;
+
+  opacity: 0.12;
+
+  background: repeating-linear-gradient(to bottom,
+      transparent,
+      transparent 3px,
+      rgba(255, 255, 255, 0.16) 4px);
+}
+
+
+/*HUD */
+.hero-hud {
+  position: absolute;
+
+  top: 110px;
+  left: 7%;
+  right: 7%;
+
+  display: flex;
+  justify-content: space-between;
+
+  font-family: "Press Start 2P", monospace;
+}
+
+
+.hero-hud div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+
+.hud-label {
+  color: var(--purple);
+
+  font-size: 7px;
+}
+
+
+.hero-hud strong {
+  font-size: 10px;
+
+  color: white;
+}
+
+
+/*main */
+.hero-main {
+  position: relative;
+
+  z-index: 10;
+
+  max-width: 900px;
+
+  text-align: center;
+}
+
+
+.insert-coin {
+  margin-bottom: 25px;
+
+  font-family: "Press Start 2P", monospace;
+
+  font-size: 8px;
+  letter-spacing: 1px;
+
+  color: var(--purple-bright);
+}
+
+
+.hero-logo {
+  width: clamp(90px, 10vw, 145px);
+  height: auto;
+
+  margin-bottom: 22px;
+
+  object-fit: contain;
+
+  image-rendering: pixelated;
+
+  filter:
+    drop-shadow(4px 4px 0 #342044) drop-shadow(0 0 20px rgba(139, 92, 246, 0.4));
+}
+
+
+.ready-player {
+  margin: 0 0 16px;
+
+  font-family: "VT323", monospace;
+
+  font-size: 24px;
+  letter-spacing: 5px;
+
+  color: #c0bbc8;
+}
+
+
+.pixel-title {
+  margin: 0;
+
+  font-family: "Press Start 2P", monospace;
+
+  font-size:
+    clamp(38px, 7vw, 92px);
+
+  line-height: 1.2;
+
+  letter-spacing: -3px;
+
+  color: white;
+
+  text-shadow:
+    6px 0 0 #211629,
+    0 6px 0 #211629,
+    6px 6px 0 var(--purple-dark);
+}
+
+
+.pixel-title span {
+  color: var(--purple-bright);
+
+  text-shadow:
+    6px 0 0 #3f245b,
+    0 6px 0 #3f245b,
+    6px 6px 0 #211629;
+}
+
+
+/*Pixel divider */
+.pixel-divider {
+  display: flex;
+  justify-content: center;
+
+  gap: 8px;
+
+  margin: 36px 0 26px;
+}
+
+
+.pixel-divider span {
+  width: 9px;
+  height: 9px;
+
+  background: var(--purple);
+}
+
+
+.pixel-divider span:nth-child(2),
+.pixel-divider span:nth-child(4) {
+  background: white;
+}
+
+
+/* subtitle */
+.hero-tagline {
+  margin: 0;
+
+  font-family: "Press Start 2P", monospace;
+
+  font-size:
+    clamp(10px, 1.5vw, 16px);
+
+  line-height: 1.9;
+
+  color: white;
+}
+
+
+.hero-description {
+  max-width: 630px;
+
+  margin:
+    28px auto 0;
+
+  font-family: "VT323", monospace;
+
+  font-size: 24px;
+  line-height: 1.25;
+
+  color: #aaa4b2;
+}
+
+
+/*buttons */
+.pixel-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 20px;
+
+  margin-top: 38px;
+}
+
+
+.pixel-button {
+  position: relative;
+
+  display: inline-block;
+
+  padding:
+    18px 24px;
+
+  font-family: "Press Start 2P", monospace;
+
+  font-size: 9px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s;
+}
+
+
+.pixel-button.primary {
+  background: var(--purple);
+
+  color: white;
+
+  border:
+    4px solid var(--purple-bright);
+
+  box-shadow:
+    6px 6px 0 #392052;
+}
+
+
+.pixel-button.secondary {
+  background: var(--black);
+
+  color: white;
+
+  border:
+    4px solid white;
+
+  box-shadow:
+    6px 6px 0 #4c4a50;
+}
+
+
+.pixel-button:hover {
+  transform:
+    translate(2px, 2px);
+
+  box-shadow:
+    3px 3px 0 #26152f;
+}
+
+
+.pixel-button:active {
+  transform:
+    translate(6px, 6px);
+
+  box-shadow: none;
+}
+
+
+.press-start {
+  margin-top: 34px;
+
+  font-family: "Press Start 2P", monospace;
+
+  font-size: 7px;
+
+  color: #77717e;
+
+  animation:
+    blink 1.2s steps(1) infinite;
+}
+
+
+@keyframes blink {
+
+  50% {
+    opacity: 0;
+  }
+
+}
+
+
+/*
+   PIXEL DECORATIONS
+*/
+
+.pixel-star {
+  position: absolute;
+
+  z-index: 1;
+
+  font-family: "Press Start 2P", monospace;
+
+  color: var(--purple);
+
+  opacity: 0.6;
+
+  animation:
+    floatPixel 3s steps(4) infinite;
+}
+
+
+.star-1 {
+  top: 23%;
+  left: 12%;
+
+  font-size: 18px;
+}
+
+
+.star-2 {
+  top: 40%;
+  right: 12%;
+
+  font-size: 12px;
+
+  animation-delay: 0.5s;
+}
+
+
+.star-3 {
+  bottom: 24%;
+  left: 17%;
+
+  font-size: 10px;
+
+  animation-delay: 1s;
+}
+
+
+.star-4 {
+  top: 29%;
+  right: 25%;
+
+  font-size: 17px;
+
+  animation-delay: 1.3s;
+}
+
+
+.star-5 {
+  bottom: 31%;
+  right: 15%;
+
+  font-size: 9px;
+
+  animation-delay: 0.8s;
+}
+
+
+@keyframes floatPixel {
+
+  0%,
+  100% {
+    transform:
+      translateY(0);
+  }
+
+  50% {
+    transform:
+      translateY(-12px);
+  }
+
+}
+
+
+/*
+   PIXEL GROUND
+*/
+
+.pixel-ground {
+  position: absolute;
+
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+
+  display: grid;
+  grid-template-columns:
+    repeat(30, 1fr);
+
+  height: 42px;
+}
+
+
+.pixel-ground div {
+  background: #140d19;
+
+  border:
+    2px solid #302039;
+}
+
+
+.pixel-ground div:nth-child(3n) {
+  background:
+    var(--purple-dark);
+}
+
+
+/*
+   SHARED SECTION TYPOGRAPHY
+*/
+
+.section-label {
+  display: inline-block;
+
+  margin-bottom: 24px;
+
+  padding: 10px 14px;
+
+  background: var(--purple);
+
+  color: white;
+
+  font-family:
+    "Press Start 2P",
+    monospace;
+
+  font-size: 8px;
+
+  box-shadow:
+    4px 4px 0 #332041;
+}
+
+
+.section-title {
+  margin:
+    0 0 50px;
+
+  font-family:
+    "Press Start 2P",
+    monospace;
+
+  font-size:
+    clamp(24px,
+      4vw,
+      55px);
+
+  line-height: 1.45;
+
+  color: white;
+
+  text-shadow:
+    5px 5px 0 var(--purple-dark);
+}
+
+
+*GENERIC PIXEL PANEL*/ .pixel-panel {
+  background:
+    var(--black-2);
+
+  border:
+    4px solid white;
+
+  padding: 30px;
+
+  box-shadow:
+    8px 8px 0 var(--purple-dark);
+}
+
+
+.pixel-panel:hover {
+  border-color:
+    var(--purple-bright);
+}
+
+
+/*RESPONSIVE */
+
+@media (max-width: 950px) {
+
+  .navbar-status {
+    display: none;
+  }
+
+  .pixel-nav-links {
+    gap: 2px;
+  }
+
+  .pixel-nav-links a {
+    padding:
+      10px 8px;
+  }
+
+}
+
+
+@media (max-width: 760px) {
+
+  .brand-text {
+    display: none;
+  }
+
+  .pixel-nav-links a span {
+    display: none;
+  }
+
+  .pixel-nav-links a {
+    font-size: 6px;
+  }
+
+  .hero-hud {
+    top: 105px;
+  }
+
+  .hero-hud strong {
+    font-size: 7px;
+  }
+
+  .pixel-title {
+    letter-spacing: -1px;
+
+    text-shadow:
+      3px 0 0 #211629,
+      0 3px 0 #211629,
+      3px 3px 0 var(--purple-dark);
+  }
+
+  .pixel-buttons {
+    flex-direction:
+      column;
+
+    align-items:
+      center;
+  }
+
+  .pixel-button {
+    width: 100%;
+    max-width: 320px;
+
+    text-align: center;
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .pixel-navbar {
+    padding:
+      0 15px;
+  }
+
+  .navbar-logo {
+    width: 38px;
+    height: 38px;
+  }
+
+  .pixel-nav-links a {
+    padding:
+      9px 5px;
+
+    font-size: 5px;
+  }
+
+  .pixel-hero {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .hero-hud {
+    left: 5%;
+    right: 5%;
+  }
+
+  .hero-description {
+    font-size: 20px;
+  }
+
+}
+
+/*BREAK / SHATTER BUTTON */
+
+.break-button {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: visible;
+
+  isolation: isolate;
+}
+
+
+/*Button text */
+
+.break-button-content {
+  position: relative;
+  z-index: 5;
+
+  transition:
+    opacity 0.12s,
+    transform 0.12s;
+}
+
+
+/*CRACKS */
+
+.crack {
+  position: absolute;
+
+  z-index: 8;
+
+  width: 3px;
+  height: 0;
+
+  background: white;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transform-origin: top;
+}
+
+
+/*center crack */
+
+.crack-1 {
+  left: 48%;
+  top: 10%;
+
+  transform: rotate(20deg);
+}
+
+
+/*left crack */
+
+.crack-2 {
+  left: 37%;
+  top: 38%;
+
+  transform: rotate(-55deg);
+}
+
+
+/*right crack */
+
+.crack-3 {
+  left: 58%;
+  top: 40%;
+
+  transform: rotate(55deg);
+}
+
+
+/*SHARDS */
+
+.shard-container {
+  position: absolute;
+  inset: 0;
+
+  z-index: 20;
+
+  pointer-events: none;
+}
+
+
+.break-shard {
+  position: absolute;
+
+  left: var(--x);
+  top: var(--y);
+
+  width: 13px;
+  height: 13px;
+
+  background: var(--purple);
+
+  border: 2px solid var(--purple-bright);
+
+  opacity: 0;
+
+  box-shadow:
+    2px 2px 0 #291634;
+}
+
+
+/*different shard shapes */
+
+.shard-1,
+.shard-5 {
+  width: 18px;
+  height: 8px;
+
+  background: white;
+}
+
+
+.shard-2,
+.shard-6 {
+  width: 8px;
+  height: 17px;
+}
+
+
+.shard-3,
+.shard-7 {
+  background: var(--purple-bright);
+}
+
+
+/*BREAKING STATE */
+
+.break-button.is-breaking {
+  animation: button-break-shake 0.28s steps(2);
+}
+
+
+.break-button.is-breaking .break-button-content {
+  animation: button-content-break 0.42s forwards;
+}
+
+
+.break-button.is-breaking .crack {
+  animation: crack-grow 0.18s forwards;
+}
+
+
+.break-button.is-breaking .crack-2 {
+  animation-delay: 0.05s;
+}
+
+
+.break-button.is-breaking .crack-3 {
+  animation-delay: 0.08s;
+}
+
+
+.break-button.is-breaking .break-shard {
+  animation:
+    pixel-shatter 0.55s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+
+  animation-delay: var(--delay);
+}
+
+
+/*ANIMATIONS */
+
+@keyframes button-break-shake {
+
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(-3px, 2px);
+  }
+
+  50% {
+    transform: translate(4px, -2px);
+  }
+
+  75% {
+    transform: translate(-2px, -2px);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+
+}
+
+
+@keyframes button-content-break {
+
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  45% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.88);
+  }
+
+}
+
+
+@keyframes crack-grow {
+
+  0% {
+    height: 0;
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    height: 45px;
+    opacity: 1;
+  }
+
+}
+
+
+@keyframes pixel-shatter {
+
+  0% {
+    opacity: 0;
+
+    transform:
+      translate(0, 0) rotate(0deg) scale(1);
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 1;
+
+    transform:
+      translate(var(--tx),
+        var(--ty)) rotate(var(--r)) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate(var(--tx),
+        var(--ty)) rotate(var(--r)) scale(0);
+  }
+
+}
+
+/*
+   BAND / CHARACTER SELECT
+*/
+
+.band-page {
+  width: 100%;
+}
+
+
+/*HEADER */
+
+.band-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  gap: 30px;
+
+  margin-bottom: 60px;
+}
+
+
+.band-header .section-title span {
+  color: var(--purple-bright);
+}
+
+
+.band-hud {
+  min-width: 130px;
+
+  padding: 18px;
 
   display: flex;
   flex-direction: column;
+
+  gap: 12px;
+
+  border: 3px solid var(--purple);
+
+  background: var(--black-2);
+
+  box-shadow:
+    5px 5px 0 var(--purple-dark);
+}
+
+
+.band-hud span {
+  font-family: "Press Start 2P", monospace;
+
+  font-size: 7px;
+
+  color: var(--purple);
+}
+
+
+.band-hud strong {
+  font-family: "Press Start 2P", monospace;
+
+  font-size: 22px;
+
+  color: white;
+}
+
+
+/*
+   TEAM PHOTO
+*/
+
+.team-photo-panel {
+  max-width: 1100px;
+
+  margin:
+    0 auto 80px;
+
+  border: 4px solid white;
+
+  background: var(--black-2);
+
+  box-shadow:
+    10px 10px 0 var(--purple-dark);
+}
+
+
+.team-photo-top,
+.team-photo-bottom {
+  min-height: 48px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding:
+    0 20px;
+
+  font-family:
+    "Press Start 2P",
+    monospace;
+
+  font-size: 7px;
+}
+
+
+.team-photo-top {
+  color: white;
+
+  border-bottom:
+    4px solid white;
+}
+
+
+.team-photo-top span:first-child {
+  color:
+    var(--purple-bright);
+}
+
+
+.team-photo-bottom {
+  color: #89838f;
+
+  border-top:
+    4px solid white;
+}
+
+
+/*IMAGE */
+.team-photo-placeholder {
+  position: relative;
+
+  min-height: 420px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(rgba(139, 92, 246, 0.05) 1px,
+      transparent 1px),
+    linear-gradient(90deg,
+      rgba(139, 92, 246, 0.05) 1px,
+      transparent 1px),
+    #08060b;
+
+  background-size:
+    24px 24px;
+}
+
+
+.team-photo-placeholder>div {
+  text-align: center;
+}
+
+
+.photo-icon {
+  display: block;
+
+  margin-bottom: 20px;
+
+  font-size: 60px;
+
+  color: var(--purple);
+}
+
+
+.team-photo-placeholder p {
+  margin: 0;
+
+  font-family:
+    "Press Start 2P",
+    monospace;
+
+  font-size: 12px;
+
+  color: white;
+}
+
+
+.team-photo-placeholder small {
+  display: block;
+
+  margin-top: 14px;
+
+  font-family:
+    "Press Start 2P",
+    monospace;
+
+  font-size: 6px;
+
+  color: #625d68;
+}
+
+
+
+
+.team-photo-placeholder img {
+  width: 100%;
+  height: 100%;
+
+  min-height: 420px;
+
+  object-fit: cover;
+
+  display: block;
+
+  image-rendering: auto;
+}
+
+.team-photo-image {
+  width: 100%;
+  height: 100%;
+
+  min-height: 420px;
+
+  object-fit: cover;
+
+  display: block;
+}
+
+
+/*SELECT MESSAGE */
+.select-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 18px;
+
+  margin-bottom: 40px;
+
+  font-family:
+    "Press Start 2P",
+    monospace;
+
+  font-size: 9px;
+
+  color: white;
+
+  animation:
+    select-blink 1.3s steps(2) infinite;
+}
+
+
+.select-message span {
+  color:
+    var(--purple-bright);
+}
+
+
+@keyframes select-blink {
+
+  50% {
+    opacity: 0.45;
+  }
+
+}
+
+
+/* CHARACTER GRID */
+.character-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 18px;
+}
+
+
+/*CHARACTER CARD */
+.character-card {
+  position: relative;
+
+  min-width: 0;
+
+  background:
+    var(--black-2);
+
+  border:
+    4px solid #504b55;
+
+  box-shadow:
+    7px 7px 0 #211726;
+
+  transition:
+    transform 0.12s steps(2),
+    border-color 0.12s,
+    box-shadow 0.12s;
+}
+
+
+.character-card:hover {
+  z-index: 2;
+
+  transform:
+    translateY(-8px);
+
+  border-color:
+    var(--purple-bright);
+
+  box-shadow:
+    9px 9px 0 var(--purple-dark);
+}
+
+
+*top bar */ .character-top {
+  height: 43px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding:
+    0 12px;
+
+  border-bottom:
+    3px solid #504b55;
+}
+
+
+.character-card:hover .character-top {
+  border-color:
+    var(--purple-bright);
+}
+
+
+.player-number {
+  font-family:
+    "Press Start 2P",
+    monospace;
+
+  font-size: 8px;
+
+  color:
+    var(--purple-bright);
+}
+
+
+.character-status {
+  font-family:
+    "Press Start 2P",
+    monospace;
+
+  font-size: 5px;
+
+  color:
+    #817b87;
+}
+
+
+*IMAGE */ .character-image {
+  height: 270px;
+
+  overflow: hidden;
+
+  border-bottom:
+    3px solid #504b55;
+
+  background:
+    radial-gradient(circle,
+      rgba(139, 92, 246, 0.20),
+      transparent 65%),
+    #08060b;
+}
+
+
+.character-image img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+
+.character-placeholder {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
 }
 
-.app h1 {
-  margin: 0;
-  font-size: clamp(3rem, 10vw, 8rem);
+
+.character-placeholder span {
+  font-family:
+    "Press Start 2P",
+    monospace;
+
+  font-size: 65px;
+
+  color:
+    var(--purple-dark);
 }
 
-.app p {
+
+.character-placeholder p {
   margin-top: 20px;
-  font-size: 1.2rem;
-  color: #999;
+
+  font-family:
+    "Press Start 2P",
+    monospace;
+
+  font-size: 6px;
+
+  color:
+    #65606a;
+}
+
+
+/*INFORMATION */
+.character-info {
+  padding: 22px;
+}
+
+
+.character-class {
+  margin:
+    0 0 15px;
+
+  font-family:
+    "Press Start 2P",
+    monospace;
+
+  font-size: 6px;
+
+  color:
+    var(--purple);
+}
+
+
+.character-info h3 {
+  margin:
+    0 0 12px;
+
+  font-family:
+    "Press Start 2P",
+    monospace;
+
+  font-size: 13px;
+
+  line-height: 1.45;
+
+  color: white;
+}
+
+
+.character-title {
+  margin-bottom: 18px;
+
+  font-family:
+    "VT323",
+    monospace;
+
+  font-size: 20px;
+
+  color:
+    var(--purple-bright);
+}
+
+
+.character-description {
+  min-height: 100px;
+
+  margin: 0;
+
+  font-family:
+    "VT323",
+    monospace;
+
+  font-size: 18px;
+
+  line-height: 1.25;
+
+  color:
+    #aaa4af;
+}
+
+
+/*SKILLS */
+.character-skills {
+  margin-top: 22px;
+
+  padding-top: 18px;
+
+  border-top:
+    2px dashed #403a46;
+}
+
+
+.character-skills>p {
+  margin:
+    0 0 12px;
+
+  font-family:
+    "Press Start 2P",
+    monospace;
+
+  font-size: 6px;
+
+  color:
+    #77717d;
+}
+
+
+.character-skills>div {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 7px;
+}
+
+
+.character-skills span {
+  padding:
+    7px 8px;
+
+  background:
+    #1d1425;
+
+  border:
+    1px solid var(--purple-dark);
+
+  font-family:
+    "Press Start 2P",
+    monospace;
+
+  font-size: 5px;
+
+  color:
+    var(--purple-bright);
+}
+
+
+/*RESPONSIVE */
+@media (max-width: 1100px) {
+
+  .character-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .band-header {
+    flex-direction:
+      column;
+  }
+
+  .band-hud {
+    width: 100%;
+  }
+
+  .character-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .team-photo-placeholder {
+    min-height: 280px;
+  }
+
+  .character-description {
+    min-height: auto;
+  }
+
 }
