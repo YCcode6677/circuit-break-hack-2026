@@ -1,8 +1,13 @@
-function MemberCard({ member }) {
+function MemberCard({ member, onSelect }) {
     return (
-        <article className="character-card">
+        <div
+            className="character-card"
+            onClick={onSelect}
+        >
 
+            {/* TOP BAR */}
             <div className="character-top">
+
                 <span className="player-number">
                     {member.player}
                 </span>
@@ -10,24 +15,22 @@ function MemberCard({ member }) {
                 <span className="character-status">
                     READY
                 </span>
+
             </div>
 
+
+            {/* PLAYER IMAGE */}
             <div className="character-image">
 
-                {member.image ? (
-                    <img
-                        src={member.image}
-                        alt={member.name}
-                    />
-                ) : (
-                    <div className="character-placeholder">
-                        <span>?</span>
-                        <p>PLAYER IMAGE</p>
-                    </div>
-                )}
+                <img
+                    src={member.image}
+                    alt={member.name}
+                />
 
             </div>
 
+
+            {/* PLAYER INFORMATION */}
             <div className="character-info">
 
                 <p className="character-class">
@@ -38,17 +41,21 @@ function MemberCard({ member }) {
                     {member.name}
                 </h3>
 
-                <p className="character-title">
+                <div className="character-title">
                     {member.title}
-                </p>
+                </div>
 
                 <p className="character-description">
                     {member.description}
                 </p>
 
+
+                {/* SKILLS */}
                 <div className="character-skills">
 
-                    <p>SKILLS</p>
+                    <p>
+                        SKILLS
+                    </p>
 
                     <div>
                         {member.skills.map((skill) => (
@@ -62,7 +69,7 @@ function MemberCard({ member }) {
 
             </div>
 
-        </article>
+        </div>
     );
 }
 

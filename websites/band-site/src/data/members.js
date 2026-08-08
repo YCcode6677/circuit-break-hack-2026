@@ -6,7 +6,7 @@ const members = [
     {
         id: 1,
         player: "P1",
-        name: "Tasfia Uddin",
+        name: "Emily Reyes",
         role: "HARDWARE",
         title: "ELECTRONICS / CIRCUITS",
         description:
@@ -18,7 +18,7 @@ const members = [
     {
         id: 2,
         player: "P2",
-        name: "Emily Reyes",
+        name: "Tasfia Uddin",
         role: "MECHANICAL",
         title: "CAD / FABRICATION",
         description:
