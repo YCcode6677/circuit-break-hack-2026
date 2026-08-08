@@ -2,11 +2,11 @@ import members from "../data/members";
 import MemberCard from "./MemberCard";
 import bandPhoto from "../assets/images/team.png";
 
-function Band() {
+function Band({ onSelectMember }) {
     return (
         <div className="band-page">
 
-            {/*  HEADER  */}
+            {/* HEADER */}
 
             <div className="band-header">
 
@@ -30,7 +30,7 @@ function Band() {
             </div>
 
 
-            {/*  TEAM PHOTO  */}
+            {/* TEAM PHOTO */}
 
             <div className="team-photo-panel">
 
@@ -71,7 +71,7 @@ function Band() {
             </div>
 
 
-            {/*  SELECT MESSAGE  */}
+            {/* SELECT MESSAGE */}
 
             <div className="select-message">
 
@@ -84,7 +84,7 @@ function Band() {
             </div>
 
 
-            {/*  MEMBER CARDS  */}
+            {/* MEMBER CARDS */}
 
             <div className="character-grid">
 
@@ -92,6 +92,7 @@ function Band() {
                     <MemberCard
                         key={member.id}
                         member={member}
+                        onSelect={() => onSelectMember(member.id)}
                     />
                 ))}
 
