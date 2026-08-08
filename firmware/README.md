@@ -10,6 +10,7 @@ HAcK Day 1 progress: functional joystick and screens; functional menu screen for
 on second screen
 
 HAcK Day 2 TO-DO:
+0. insert micropico code into the repo (ask one of the Julians how to do this!)
 1. implement functions.py with:
 - display_choices(), which will display the menu items, 
 - volume_control(), which will display the current volume percentage on oled1, 
