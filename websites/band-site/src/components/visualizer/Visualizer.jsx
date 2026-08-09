@@ -10,6 +10,7 @@ import VisualizerBackground from "./VisualizerBackground";
 import VisualizerHUD from "./VisualizerHUD";
 
 import "./Visualizer.css";
+import { connectPico, disconnectPico } from "./picoSerial";
 
 
 const NOTE_KEYS = {
@@ -122,174 +123,172 @@ function Visualizer({ selectedDino }) {
     const victoryTimerRef =
         useRef(null);
 
+    /*
+    =============================================
+    RESET SONG
+    =============================================
+    */
 
-    useEffect(() => {
+    function resetSong() {
 
-        /*
-        =============================================
-        RESET SONG
-        =============================================
-        */
+        songProgressRef.current =
+            0;
 
-        function resetSong() {
-
-            songProgressRef.current =
-                0;
-
-            setSongProgress(
-                0
-            );
-        }
+        setSongProgress(
+            0
+        );
+    }
 
 
-        /*
-        =============================================
-        SHOW VICTORY
-        =============================================
-        */
+    /*
+    =============================================
+    SHOW VICTORY
+    =============================================
+    */
 
-        function showVictory() {
+    function showVictory() {
 
-            console.log(
-                "[SONG] COMPLETE"
-            );
-
-
-            setSongComplete(
-                true
-            );
+        console.log(
+            "[SONG] COMPLETE"
+        );
 
 
-            if (
-                victoryTimerRef.current
-            ) {
-
-                clearTimeout(
-                    victoryTimerRef.current
-                );
-            }
+        setSongComplete(
+            true
+        );
 
 
-            victoryTimerRef.current =
-                setTimeout(() => {
-
-                    setSongComplete(
-                        false
-                    );
-
-                    resetSong();
-
-                }, 3000);
-        }
-
-
-        /*
-        =============================================
-        CHECK SONG NOTE
-        =============================================
-        */
-
-        function processSongNote(
-            playedNoteIndex
+        if (
+            victoryTimerRef.current
         ) {
 
-            const currentProgress =
-                songProgressRef.current;
-
-
-            const expectedNote =
-                SONG_SEQUENCE[
-                currentProgress
-                ];
-
-
-            console.log(
-                "[SONG]",
-                "played:",
-                playedNoteIndex,
-                "expected:",
-                expectedNote,
-                "progress:",
-                currentProgress
+            clearTimeout(
+                victoryTimerRef.current
             );
-
-
-            /*
-            Correct note
-            */
-
-            if (
-                playedNoteIndex ===
-                expectedNote
-            ) {
-
-                const nextProgress =
-                    currentProgress + 1;
-
-
-                songProgressRef.current =
-                    nextProgress;
-
-
-                setSongProgress(
-                    nextProgress
-                );
-
-
-                console.log(
-                    "[SONG] CORRECT",
-                    `${nextProgress}/${SONG_SEQUENCE.length}`
-                );
-
-
-                /*
-                Song finished
-                */
-
-                if (
-                    nextProgress ===
-                    SONG_SEQUENCE.length
-                ) {
-
-                    showVictory();
-
-                }
-
-
-                return;
-            }
-
-
-            /*
-            Wrong note
-            */
-
-            console.log(
-                "[SONG] WRONG NOTE"
-            );
-
-
-
-            if (
-                playedNoteIndex ===
-                SONG_SEQUENCE[0]
-            ) {
-
-                songProgressRef.current =
-                    1;
-
-                setSongProgress(
-                    1
-                );
-
-
-                return;
-            }
-
-
-            resetSong();
         }
 
+
+        victoryTimerRef.current =
+            setTimeout(() => {
+
+                setSongComplete(
+                    false
+                );
+
+                resetSong();
+
+            }, 3000);
+    }
+
+
+    /*
+    =============================================
+    CHECK SONG NOTE
+    =============================================
+    */
+
+    function processSongNote(
+        playedNoteIndex
+    ) {
+
+        const currentProgress =
+            songProgressRef.current;
+
+
+        const expectedNote =
+            SONG_SEQUENCE[
+            currentProgress
+            ];
+
+
+        console.log(
+            "[SONG]",
+            "played:",
+            playedNoteIndex,
+            "expected:",
+            expectedNote,
+            "progress:",
+            currentProgress
+        );
+
+
+        /*
+        Correct note
+        */
+
+        if (
+            playedNoteIndex ===
+            expectedNote
+        ) {
+
+            const nextProgress =
+                currentProgress + 1;
+
+
+            songProgressRef.current =
+                nextProgress;
+
+
+            setSongProgress(
+                nextProgress
+            );
+
+
+            console.log(
+                "[SONG] CORRECT",
+                `${nextProgress}/${SONG_SEQUENCE.length}`
+            );
+
+
+            /*
+            Song finished
+            */
+
+            if (
+                nextProgress ===
+                SONG_SEQUENCE.length
+            ) {
+
+                showVictory();
+
+            }
+
+
+            return;
+        }
+
+
+        /*
+        Wrong note
+        */
+
+        console.log(
+            "[SONG] WRONG NOTE"
+        );
+
+
+
+        if (
+            playedNoteIndex ===
+            SONG_SEQUENCE[0]
+        ) {
+
+            songProgressRef.current =
+                1;
+
+            setSongProgress(
+                1
+            );
+
+
+            return;
+        }
+
+
+        resetSong();
+    }
+
+    useEffect(() => {
 
         /*
         =============================================
