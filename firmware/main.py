@@ -15,7 +15,7 @@ i2c1 = I2C(1, sda=Pin(18), scl=Pin(19), freq=400000)
 oled1 = ssd1306.SSD1306_I2C(128, 64, i2c0, addr=0x3C)
 oled2 = ssd1306.SSD1306_I2C(128, 64, i2c1, addr=0x3C)
 
-choices = ["1: Song 1", "2: Song 2", "3: Test Piano", "4: Quit"]
+choices = ["1: Ode to Joy", "2: Mary's Lamb", "3: Twinkle", "4: Quit"]
 yPosSongs = [27, 36, 45, 54, 63]
 effects = ["Vibrato", "Distortion", "Flute", "Distortion Flute", "No effect"]
 tiles = [0,1,2,3,4,5,6,7]
