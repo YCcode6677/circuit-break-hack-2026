@@ -5,13 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "pico": "node picoServer.js",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview"
   },
   "dependencies": {
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "serialport": "^13.0.0",
+    "ws": "^8.21.3"
   },
   "devDependencies": {
     "@types/react": "^19.2.17",

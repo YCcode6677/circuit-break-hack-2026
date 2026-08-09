@@ -1,9 +1,9 @@
 import song1 from "../assets/audio/lamb.mp3";
 import song2 from "../assets/audio/Twinkle.mp3";
 import song3 from "../assets/audio/joy.mp3";
-import album1 from "../assets/images/lamb.png";
-import album2 from "../assets/images/star.png";
-import album3 from "../assets/images/joy.png";
+import album1 from "../assets/images/lamb.jpg";
+import album2 from "../assets/images/star.jpg";
+import album3 from "../assets/images/joy.jpg";
 import TrackCard from "./TrackCard";
 
 const tracks = [
