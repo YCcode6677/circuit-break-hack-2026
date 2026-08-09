@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
 import { connectPico, disconnectPico } from './picoSerial'
 
-function VisualizerHUD({ position, volume, effect = 0 }) {
+function VisualizerHUD({ position, volume = 0 }) {
 
     const volumePercent = Math.round(volume * 100);
     const [connected, setConnected] = useState(false);
     const [lastData, setLastData] = useState(null);
     const [note, setNote] = useState(null);
+    const [effect, setEffect] = useState(null);
 
     useEffect(() => {
         function handleStatus(e) {

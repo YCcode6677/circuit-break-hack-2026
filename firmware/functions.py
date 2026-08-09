@@ -139,7 +139,7 @@ def update_joystick_effects(x_data, y_data):
         USE_TRIANGLE=False
         
 # Send note information over USB serial to website
-def print_notes(buttons, prev_states):
+def print_notes(buttons, prev_states = [True for _ in range(8)]):
     for i in range(len(buttons)):
         pressed = buttons[i].value() == 0
 

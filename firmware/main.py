@@ -105,7 +105,7 @@ while True:
             functions.update_joystick_effects(x_raw, y_raw)
             
             # Send current note information to website
-            functions.print_notes(functions.BUTTON_PINS, [True for _ in range(5)])
+            functions.print_notes(functions.BUTTON_PINS)
 
             for i in range(8):
                 if functions.BUTTON_PINS[i].value() == 0:
