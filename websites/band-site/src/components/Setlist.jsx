@@ -32,7 +32,7 @@ const tracks = [
 
     {
         id: "03",
-        title: "Song Three",
+        title: "Ode to Joy ",
         duration: "12:56",
         type: "ENCORE 02",
         range: "C4 - C5",
@@ -52,7 +52,7 @@ export default function Setlist() {
                 <h2>SETLIST</h2>
 
                 <p className="setlist-description">
-                    Pick a track. Break the circuit.
+                    Pick a track.
                 </p>
             </div>
 

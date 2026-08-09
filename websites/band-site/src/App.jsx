@@ -47,7 +47,7 @@ function App() {
 
         </section>
 
-        <section id="music" className="game-section">
+        <section id="music" className="music-section">
           <Setlist />
         </section>
 

@@ -449,18 +449,19 @@
 
 .effects-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 25px;
+    width: 100%;
 }
 
 .effect-card {
     border: 3px solid #303030;
     padding: 30px;
-    min-height: 310px;
+    min-height: 420px;
     background: var(--dark);
-    transition:
-        transform 0.15s ease,
-        border-color 0.15s ease;
+
+    display: flex;
+    flex-direction: column;
 }
 
 .effect-card:hover {
@@ -492,10 +493,13 @@
 }
 
 .effect-status {
-    margin-top: 25px;
+    margin-top: auto;
+    padding-top: 25px;
+
     display: flex;
     align-items: center;
     gap: 10px;
+
     color: var(--purple-light);
     font-size: 0.5rem;
 }
