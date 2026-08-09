@@ -10,7 +10,7 @@ import VisualizerBackground from "./VisualizerBackground";
 import VisualizerHUD from "./VisualizerHUD";
 
 import "./Visualizer.css";
-import { connectPico, disconnectPico } from "./picoSerial";
+
 
 
 const NOTE_KEYS = {
@@ -55,6 +55,60 @@ const NOTE_KEYS = {
     },
 };
 
+const PICO_NOTES = [
+    {
+        note: "C4",
+        index: 0,
+    },
+
+    {
+        note: "D4",
+        index: 1,
+    },
+
+    {
+        note: "E4",
+        index: 2,
+    },
+
+    {
+        note: "F4",
+        index: 3,
+    },
+
+    {
+        note: "G4",
+        index: 4,
+    },
+
+    {
+        note: "A4",
+        index: 5,
+    },
+
+    {
+        note: "B4",
+        index: 6,
+    },
+
+    {
+        note: "C5",
+        index: 7,
+    },
+];
+const PICO_EFFECTS =
+    new Set([
+        "NORMAL",
+        "ECHO",
+        "DISTORTION",
+        "REVERB",
+        "BITCRUSH",
+    ]);
+
+
+const PICO_WS_URL =
+    import.meta.env.VITE_PICO_WS_URL ||
+    "ws://localhost:8080";
 
 const EFFECT_KEYS = {
     ArrowUp: "ECHO",
@@ -286,9 +340,28 @@ function Visualizer({ selectedDino }) {
             return;
         }
 
-
+        /* making some change here !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
         resetSong();
     }
+    function triggerNote(noteData) {
+        setNote(
+            noteData.note
+        );
+
+        setNoteIndex(
+            noteData.index
+        );
+
+        setTriggerId(
+            (previous) =>
+                previous + 1
+        );
+
+        processSongNote(
+            noteData.index
+        );
+    }
+    /* making some change here !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
 
     useEffect(() => {
 
@@ -503,6 +576,315 @@ function Visualizer({ selectedDino }) {
         };
 
     }, []);
+
+    /*make change here !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+    useEffect(() => {
+
+        let socket = null;
+        let reconnectTimer = null;
+        let stopped = false;
+
+
+        function handlePicoMessage(rawMessage) {
+
+            const message =
+                rawMessage.trim();
+
+
+            if (!message) {
+                return;
+            }
+
+
+            console.log(
+                "[PICO INPUT]",
+                message
+            );
+
+
+            const separatorIndex =
+                message.indexOf(":");
+
+
+            if (
+                separatorIndex === -1
+            ) {
+
+                console.warn(
+                    "[PICO INPUT] Unknown message:",
+                    message
+                );
+
+                return;
+            }
+
+
+            const type =
+                message
+                    .slice(
+                        0,
+                        separatorIndex
+                    )
+                    .trim()
+                    .toUpperCase();
+
+
+            const value =
+                message
+                    .slice(
+                        separatorIndex + 1
+                    )
+                    .trim();
+
+
+            if (
+                type === "NOTE"
+            ) {
+
+                const playedNoteIndex =
+                    Number(value);
+
+
+                if (
+                    !Number.isInteger(
+                        playedNoteIndex
+                    ) ||
+                    playedNoteIndex < 0 ||
+                    playedNoteIndex >=
+                    PICO_NOTES.length
+                ) {
+
+                    console.warn(
+                        "[PICO INPUT] Invalid note:",
+                        value
+                    );
+
+                    return;
+                }
+
+
+                const noteData =
+                    PICO_NOTES[
+                    playedNoteIndex
+                    ];
+
+
+                setNote(
+                    noteData.note
+                );
+
+
+                setNoteIndex(
+                    noteData.index
+                );
+
+
+                setTriggerId(
+                    (previous) =>
+                        previous + 1
+                );
+
+
+                processSongNote(
+                    noteData.index
+                );
+
+
+                return;
+            }
+
+
+            if (
+                type === "EFFECT"
+            ) {
+
+                const effectName =
+                    value.toUpperCase();
+
+
+                if (
+                    !PICO_EFFECTS.has(
+                        effectName
+                    )
+                ) {
+
+                    console.warn(
+                        "[PICO INPUT] Invalid effect:",
+                        value
+                    );
+
+                    return;
+                }
+
+
+                setEffect(
+                    effectName
+                );
+
+
+                console.log(
+                    "[PICO EFFECT]",
+                    effectName
+                );
+
+
+                return;
+            }
+
+
+            if (
+                type === "VOLUME"
+            ) {
+
+                const nextVolume =
+                    Number(value);
+
+
+                if (
+                    !Number.isFinite(
+                        nextVolume
+                    )
+                ) {
+
+                    console.warn(
+                        "[PICO INPUT] Invalid volume:",
+                        value
+                    );
+
+                    return;
+                }
+
+
+                const safeVolume =
+                    Math.max(
+                        0,
+                        Math.min(
+                            1,
+                            nextVolume
+                        )
+                    );
+
+
+                setVolume(
+                    safeVolume
+                );
+
+
+                console.log(
+                    "[PICO VOLUME]",
+                    safeVolume
+                );
+
+
+                return;
+            }
+
+
+            console.warn(
+                "[PICO INPUT] Unknown type:",
+                type
+            );
+        }
+        function connectWebSocket() {
+
+            if (stopped) {
+                return;
+            }
+
+
+            console.log(
+                "[WEBSOCKET] Connecting to",
+                PICO_WS_URL
+            );
+
+
+            socket =
+                new WebSocket(
+                    PICO_WS_URL
+                );
+
+
+            socket.onopen =
+                () => {
+
+                    console.log(
+                        "[WEBSOCKET] Connected"
+                    );
+                };
+
+
+            socket.onmessage =
+                (event) => {
+
+                    handlePicoMessage(
+                        event.data
+                    );
+                };
+
+
+            socket.onerror =
+                (error) => {
+
+                    console.error(
+                        "[WEBSOCKET] Error:",
+                        error
+                    );
+                };
+
+
+            socket.onclose =
+                () => {
+
+                    console.log(
+                        "[WEBSOCKET] Disconnected"
+                    );
+
+
+                    if (stopped) {
+                        return;
+                    }
+
+
+                    reconnectTimer =
+                        setTimeout(
+                            connectWebSocket,
+                            1500
+                        );
+                };
+        }
+
+
+        connectWebSocket();
+
+
+        return () => {
+
+            stopped =
+                true;
+
+
+            if (
+                reconnectTimer
+            ) {
+
+                clearTimeout(
+                    reconnectTimer
+                );
+            }
+
+
+            if (
+                socket
+            ) {
+
+                socket.close();
+            }
+        };
+
+    }, []);
+
+    /*make change here !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+
 
 
     return (
