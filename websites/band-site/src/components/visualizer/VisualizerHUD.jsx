@@ -59,4 +59,8 @@ function VisualizerHUD({
     return null;
 }
 
+/* for test the pico connect only */
+
+
+
 export default VisualizerHUD;

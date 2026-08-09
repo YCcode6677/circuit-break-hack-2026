@@ -3,6 +3,7 @@ To Do:
 - Add serial output to pico firmware
 - Finish modifying 'Visualizer.jsx'
 - Add connect pico controls
+*/
 
 // picoSerial.js
 
@@ -22,11 +23,11 @@ export async function connectPico() {
   try {
     // 1. Request port selection from the user
     port = await navigator.serial.requestPort();
-    
+
     // 2. Open the serial connection
     await port.open({ baudRate: 115200 });
     keepReading = true;
-    
+
     // Announce connection state change
     window.dispatchEvent(new CustomEvent("pico-status", { detail: { connected: true } }));
 
@@ -39,11 +40,11 @@ export async function connectPico() {
     while (port.readable && keepReading) {
       const { value, done } = await reader.read();
       if (done) break;
-      
+
       if (value) {
         buffer += value;
         const lines = buffer.split("\n");
-        buffer = lines.pop() || ""; 
+        buffer = lines.pop() || "";
 
         const cleanLines = lines.map(line => line.trim()).filter(Boolean);
         if (cleanLines.length > 0) {
@@ -55,7 +56,7 @@ export async function connectPico() {
 
     // 4. Cleanup when loop breaks
     reader.releaseLock();
-    await readableStreamClosed.catch(() => {});
+    await readableStreamClosed.catch(() => { });
     await port.close();
   } catch (error) {
     console.error("Serial connection failed:", error);
@@ -74,6 +75,6 @@ export async function connectPico() {
 export function disconnectPico() {
   keepReading = false;
   if (reader) {
-    reader.cancel().catch(() => {}); // Force break out of 'await reader.read()'
+    reader.cancel().catch(() => { }); // Force break out of 'await reader.read()'
   }
 }
