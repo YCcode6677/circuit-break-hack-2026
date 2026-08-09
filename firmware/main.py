@@ -103,6 +103,9 @@ while True:
             y_raw = adc_y.read_u16()
             effectIdx = functions.sound_effect(x_raw, y_raw)
             functions.update_joystick_effects(x_raw, y_raw)
+            
+            # Send current note information to website
+            functions.print_notes(functions.BUTTON_PINS, [True for _ in range(5)])
 
             for i in range(8):
                 if functions.BUTTON_PINS[i].value() == 0:

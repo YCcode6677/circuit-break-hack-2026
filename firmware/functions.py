@@ -139,11 +139,15 @@ def update_joystick_effects(x_data, y_data):
         USE_TRIANGLE=False
         
 # Send note information over USB serial to website
-def print_notes(buttons): # List of buttons
+def print_notes(buttons, prev_states):
     for i in range(len(buttons)):
-        # Check if any buttons are pressed
-        if buttons[i].value() == 0:
-            print(f"Note {i} pressed")
+        pressed = buttons[i].value() == 0
+
+        # Only print when state is changed
+        if pressed != prev_states[i]:
+            print(f"NOTE,{i},{'ON' if pressed else 'OFF'}")
+            prev_states[i] = pressed
+    return prev_states
 
 def audio_thread_loop():
     vibrato_phase = 0.0
@@ -168,9 +172,6 @@ def audio_thread_loop():
                 step[idx] = 0
 
         active_table = triangle_table if USE_TRIANGLE else sine_table
-
-        # Send current note information to website
-        print_notes(BUTTON_PINS)
         
         # Adjust volume with get_volume()
         synth_chunk(out_buf, CHUNK, active_table, phase, step, NUM_VOICES, 

@@ -1,15 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { connectPico, disconnectPico } from './picoSerial'
 
-function VisualizerHUD({
-    position,
-    note = null,
-    effect = "NORMAL",
-    volume = 0,
-}) {
+function VisualizerHUD({ position, volume, effect = 0 }) {
+
     const volumePercent = Math.round(volume * 100);
     const [connected, setConnected] = useState(false);
     const [lastData, setLastData] = useState(null);
+    const [note, setNote] = useState(null);
 
     useEffect(() => {
         function handleStatus(e) {
@@ -17,9 +14,12 @@ function VisualizerHUD({
         }
 
         function handleData(e) {
-            // e.detail is an array of cleaned lines from this read chunk
-            setLastData(e.detail[e.detail.length - 1]); // most recent line
-            dataLogRef.current = [...dataLogRef.current, ...e.detail].slice(-50); // keep last 50
+            e.detail.forEach(line => {
+                const [type, id, state] = line.split(",");
+                if (type === "NOTE" && state === "ON") {
+                    setNote(id); // or however you map button index -> note name
+                }
+            });
         }
 
         window.addEventListener("pico-status", handleStatus);
