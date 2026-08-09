@@ -10,14 +10,17 @@ adc_y = ADC(Pin(27))
 sw = Pin(22, Pin.IN, Pin.PULL_UP)
 
 # setting up the screens
-i2c0 = I2C(0, sda=Pin(0), scl=Pin(1), freq=400000)
-i2c1 = I2C(1, sda=Pin(2), scl=Pin(3), freq=400000)
+i2c0 = I2C(0, sda=Pin(16), scl=Pin(17), freq=400000)
+i2c1 = I2C(1, sda=Pin(18), scl=Pin(19), freq=400000)
 oled1 = ssd1306.SSD1306_I2C(128, 64, i2c0, addr=0x3C)
 oled2 = ssd1306.SSD1306_I2C(128, 64, i2c1, addr=0x3C)
 
 choices = ["1: Song 1", "2: Song 2", "3: Test Piano", "4: Quit"]
 yPosSongs = [27, 36, 45, 54, 63]
+effects = ["Vibrato", "Distortion", "Flute", "Distortion Flute", "No effect"]
+tiles = [0,1,2,3,4,5,6,7]
 
+functions.start_audio_engine()
 while True:
     oled1.text('This is Circuit', 0, 0)
     oled1.text('Break!', 0, 9)
@@ -98,6 +101,17 @@ while True:
         while button_pressed == 0: #free-play will end when the user presses down on the joystick
             x_raw = adc_x.read_u16()
             y_raw = adc_y.read_u16()
+            effectIdx = functions.sound_effect(x_raw, y_raw)
+            functions.update_joystick_effects(x_raw, y_raw)
+
+            for i in range(8):
+                if functions.BUTTON_PINS[i].value() == 0:
+                    if i < 4:
+                        oled2.fill_rect(i*32,0,30,31,0)
+                    else:
+                        oled2.fill_rect((i-4)*32,33,30,31,0)
+                    oled2.show()
+
             oled1.fill(0)
             oled1.show()
 
@@ -113,23 +127,27 @@ while True:
             oled2.fill_rect(96,33,30,31,1) #7
             oled2.show()
 
-
             # OLED 1
-            oled1.text('Volume: ', 0, 0) #value it outputs has to be controlled by the potentiometer.
+            # Read value from pot and convert to percentage
+            vol = functions.get_volume()*100
+            oled1.text('Volume: ' + f"{vol:.2f}" + '%', 0, 0) #value it outputs has to be controlled by the potentiometer.
+
             oled1.show()
             #The loop for the sound effect has to run as long as the song is playing and stop once its done
             oled1.text("Sound effect: ",0, 9 )
-            oled1.text(functions.sound_effect(x_raw, y_raw), 0, 18)
+            oled1.text(effects[effectIdx], 0, 18)
             oled1.show()
 
             button_pressed = sw.value() == 0
-            time.sleep(0.1)
+            #time.sleep(0.1)
 
+        oled1.fill(0)
+        oled2.fill(0)
         oled1.text("The circuit has", 0, 0)
         oled1.show()
         oled2.text("been broken!", 0, 0)
         oled2.show()
-        time.sleep(2)
+        time.sleep(3)
         oled1.fill(0)
         oled2.fill(0)
         oled1.show()
