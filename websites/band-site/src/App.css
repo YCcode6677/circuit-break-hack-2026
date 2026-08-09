@@ -1686,7 +1686,7 @@ section {
 }
 
 .section-label {
-  color: #a855f7;
+  color: #e1dce6;
   letter-spacing: 4px;
   font-size: 0.85rem;
   margin-bottom: 12px;
@@ -1937,4 +1937,10 @@ section {
   object-fit: cover;
   display: block;
   image-rendering: auto;
+}
+
+.music-section {
+  margin: 0;
+  padding: 0;
+  background: transparent;
 }

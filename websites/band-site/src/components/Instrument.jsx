@@ -18,7 +18,7 @@ const effects = [
         name: "VIBRATO",
         symbol: "〰",
         description:
-            "Adds a repeating pitch variation to create a smooth, expressive sound.",
+            "Adds a repeating pitch variation to create a smooth and expressive sound.",
     },
     {
         id: "02",
@@ -89,13 +89,18 @@ function Instrument() {
                             </div>
 
                             <div className="stat-row">
-                                <span>CONTROL</span>
-                                <strong>PHYSICAL</strong>
+                                <span>SOUND MODES</span>
+                                <strong>4</strong>
                             </div>
 
                             <div className="stat-row">
-                                <span>DATA</span>
-                                <strong>USB SERIAL</strong>
+                                <span>CONTROLLER</span>
+                                <strong>RASPBERRY PI PICO 2</strong>
+                            </div>
+
+                            <div className="stat-row">
+                                <span>DATA LINK</span>
+                                <strong>USB + WEBSOCKET</strong>
                             </div>
                         </div>
                     </div>
@@ -107,13 +112,13 @@ function Instrument() {
                         </div>
 
                         <div>
-                            <strong>04+</strong>
+                            <strong>04</strong>
                             <span>SOUND MODES</span>
                         </div>
 
                         <div>
-                            <strong>USB</strong>
-                            <span>CONNECTED</span>
+                            <strong>LIVE</strong>
+                            <span>WEBSOCKET</span>
                         </div>
                     </div>
                 </div>
@@ -138,6 +143,7 @@ function Instrument() {
                                 <button
                                     className="note-button"
                                     key={`${item.note}-${index}`}
+                                    type="button"
                                 >
                                     <span className="button-index">
                                         {String(index + 1).padStart(2, "0")}
@@ -161,7 +167,8 @@ function Instrument() {
                             </div>
 
                             <h3>JOYSTICK</h3>
-                            <span>SOUND EFFECT CONTROL</span>
+
+                            <span>SOUND MODE CONTROL</span>
                         </div>
 
                         <div className="control-card">
@@ -172,6 +179,7 @@ function Instrument() {
                             </div>
 
                             <h3>VOLUME</h3>
+
                             <span>REAL-TIME LEVEL CONTROL</span>
                         </div>
                     </div>
@@ -199,21 +207,28 @@ function Instrument() {
                         </p>
 
                         <p className="terminal-line">
-                            &gt; OUTPUT_MODE: DIGITAL
+                            &gt; NOTE_COUNT: 8
                         </p>
 
                         <p className="terminal-line">
-                            &gt; INPUT_COUNT: 8
+                            &gt; SOUND_MODES: 4
                         </p>
 
                         <p className="terminal-line">
-                            &gt; USB_LINK: ENABLED
+                            &gt; USB_SERIAL: ENABLED
+                        </p>
+
+                        <p className="terminal-line">
+                            &gt; WEBSOCKET: ENABLED
                         </p>
                     </div>
 
                     <div className="octave">
                         {notes.map((item, index) => (
-                            <div className="octave-note" key={`octave-${index}`}>
+                            <div
+                                className="octave-note"
+                                key={`octave-${item.note}-${index}`}
+                            >
                                 <div
                                     className="octave-bar"
                                     style={{
@@ -233,14 +248,17 @@ function Instrument() {
                     <span>03</span>
 
                     <div>
-                        <p>SOUND MODIFIERS</p>
-                        <h2>EFFECTS</h2>
+                        <p>AUDIO SYSTEM</p>
+                        <h2>SOUND MODES</h2>
                     </div>
                 </div>
 
                 <div className="effects-grid">
                     {effects.map((effect) => (
-                        <article className="effect-card" key={effect.id}>
+                        <article
+                            className="effect-card"
+                            key={effect.id}
+                        >
                             <span className="effect-number">
                                 FX_{effect.id}
                             </span>
@@ -267,7 +285,7 @@ function Instrument() {
                     <span>04</span>
 
                     <div>
-                        <p>SYSTEM ARCHITECTURE</p>
+                        <p>LIVE CONNECTION</p>
                         <h2>HOW IT WORKS</h2>
                     </div>
                 </div>
@@ -275,8 +293,12 @@ function Instrument() {
                 <div className="system-flow">
                     <div className="flow-box">
                         <span>01</span>
-                        <strong>PLAYER</strong>
-                        <small>Physical Input</small>
+
+                        <strong>INSTRUMENT</strong>
+
+                        <small>
+                            Player controls notes, effects and volume
+                        </small>
                     </div>
 
                     <div className="flow-arrow">
@@ -285,8 +307,12 @@ function Instrument() {
 
                     <div className="flow-box">
                         <span>02</span>
+
                         <strong>PICO 2</strong>
-                        <small>Process Input</small>
+
+                        <small>
+                            Reads instrument input
+                        </small>
                     </div>
 
                     <div className="flow-arrow">
@@ -295,24 +321,26 @@ function Instrument() {
 
                     <div className="flow-box">
                         <span>03</span>
-                        <strong>SOUND</strong>
-                        <small>Audio Output</small>
-                    </div>
-                </div>
 
-                <div className="usb-flow">
-                    <div className="usb-line" />
+                        <strong>SERVER</strong>
 
-                    <div className="usb-box">
-                        <span>USB DATA</span>
-                        <strong>PICO → WEBSITE</strong>
+                        <small>
+                            USB Serial → WebSocket
+                        </small>
                     </div>
 
-                    <div className="usb-line" />
+                    <div className="flow-arrow">
+                        →
+                    </div>
 
-                    <div className="usb-box">
-                        <span>LIVE RESPONSE</span>
-                        <strong>VISUALIZER</strong>
+                    <div className="flow-box">
+                        <span>04</span>
+
+                        <strong>WEBSITE</strong>
+
+                        <small>
+                            Reacts to live performance data
+                        </small>
                     </div>
                 </div>
             </section>
@@ -323,6 +351,7 @@ function Instrument() {
 
                     <div>
                         <p>DESIGN LANGUAGE</p>
+
                         <h2>BUILT TO BREAK THE CIRCUIT</h2>
                     </div>
                 </div>
@@ -330,28 +359,34 @@ function Instrument() {
                 <div className="design-grid">
                     <div className="design-card">
                         <span>01</span>
+
                         <h3>ARCADE</h3>
+
                         <p>
-                            Large physical controls make the instrument
-                            immediate, playful and performance-focused.
+                            Large physical controls create a direct and playful
+                            interface inspired by classic arcade machines.
                         </p>
                     </div>
 
                     <div className="design-card">
                         <span>02</span>
+
                         <h3>CIRCUIT</h3>
+
                         <p>
-                            Electronics are not hidden from the identity.
-                            They define how the instrument looks and reacts.
+                            The Raspberry Pi Pico 2 connects physical controls
+                            with digital sound and live website data.
                         </p>
                     </div>
 
                     <div className="design-card">
                         <span>03</span>
+
                         <h3>BREAK</h3>
+
                         <p>
-                            Sound and visuals react with distortion,
-                            fragmentation and controlled digital chaos.
+                            Sound effects, pixel graphics and reactive visuals
+                            create the feeling of controlled digital chaos.
                         </p>
                     </div>
                 </div>
