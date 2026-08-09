@@ -142,7 +142,7 @@ def update_joystick_effects(x_data, y_data):
 def print_notes(buttons): # List of buttons
     for i in range(len(buttons)):
         # Check if any buttons are pressed
-        if buttons[i].value() == 1:
+        if buttons[i].value() == 0:
             print(f"Note {i} pressed")
 
 def audio_thread_loop():
