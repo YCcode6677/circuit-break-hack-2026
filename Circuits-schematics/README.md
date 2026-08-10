@@ -1,3 +1,3 @@
 # circuits-schematics
 
-Circuit diagrams and wiring documentation will be stored here.
+See schematic.jpg for a wiring diagram for the circuit used in the final product.
